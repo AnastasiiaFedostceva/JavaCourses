@@ -12,7 +12,7 @@ public class ScoringPlayer {
     private ScoringPlayer() {
 
     }
-
+    //по идее, тут должен быть private
     public ScoringPlayer(String name, PlayerRole role) {
         if(Utils.validateName(name) && role != null){
             this.name = name;
@@ -83,5 +83,45 @@ public class ScoringPlayer {
     @Override
     public int hashCode() {
         return Objects.hash(name, score, active, role);
+    }
+
+    public static class Builder {
+        private String name;
+        //private int score;
+        //private boolean active;
+        private PlayerRole role;
+
+        public Builder() {
+        }
+
+        public Builder setName (String Name) {
+            this.name = name;
+            if(Utils.validateName(name)) {
+                this.name = name;
+            }
+            else {
+                throw new IllegalArgumentException("Имя не может быть пустым или null");
+            }
+            return this;
+        }
+
+        /*public Builder setScore(int score) {
+            this.score = score;
+            return this;
+        }
+
+        public Builder setActive(boolean active) {
+            this.active = active;
+            return this;
+        }*/
+
+        public Builder setPlayerRole(PlayerRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public ScoringPlayer build () {
+            return new ScoringPlayer(name, role);
+        }
     }
 }
