@@ -1,11 +1,11 @@
 package ru.java.courses;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Lesson11to12_SetMap {
 
-    public static class User {
+    public static class User implements Comparable<User> {
 
         private String name;
         private int age;
@@ -43,6 +43,14 @@ public class Lesson11to12_SetMap {
         public void setPhone(String phone) {
             this.phone = phone;
         }
+
+        @Override
+        public int compareTo(User o) {
+            if (name.equals(o.name)) {
+                return Integer.compare(age,o.age);
+            }
+            return name.compareTo(o.name);
+        }
     }
 
     /**
@@ -53,10 +61,8 @@ public class Lesson11to12_SetMap {
      * 4. Возвращаем последнего пользователя
      */
     public static User task1(Collection<User> source) {
-        // свой код нужно писать тут
-        // следующую строку можно удалять
-
-        return null;
+        TreeSet<User> users = new TreeSet<User>(source);
+        return users.last();
     }
 
     /**
@@ -67,10 +73,11 @@ public class Lesson11to12_SetMap {
      * 4. Вернуть количество записей в справочнике
      */
     public static int task2(Collection<User> source) {
-        // свой код нужно писать тут
-        // следующую строку можно удалять
-
-        return 0;
+        Map<String,User> map = new HashMap<String, User>();
+        for(User user : source) {
+            map.put(user.getPhone(), user);
+        }
+        return map.size();
     }
 
 
@@ -85,10 +92,15 @@ public class Lesson11to12_SetMap {
      * Нумерация полок начинается с единицы!
      */
     public static Map task3(Collection<String> source) {
-        // свой код нужно писать тут
-        // следующую строку можно удалять
-
-        return null;
+        final int maxShellCount=5;
+        List<String> orderedBooks = source.stream().sorted().collect(Collectors.toList());
+        Map<Integer,List<String>> result = new HashMap<Integer,List<String>>();
+        int shellSize=orderedBooks.size()/maxShellCount;
+        for(int shellNumber=1;shellNumber<maxShellCount;shellNumber++){
+            result.put(shellNumber,orderedBooks.subList((shellNumber-1)*shellSize,shellNumber*shellSize));
+        }
+        result.put(maxShellCount,orderedBooks.subList((maxShellCount-1)*shellSize,orderedBooks.size()));
+        return result;
     }
 
 
@@ -98,8 +110,10 @@ public class Lesson11to12_SetMap {
      * 5. Вернуть справочник [название книги -> номер полки]
      */
     public static Map task4(Map<Integer, String> source) {
-        // свой код нужно писать тут
-        // следующую строку можно удалять
-        return null;
+        Map<String,Integer>  result = new HashMap<String,Integer>();
+        for(Map.Entry<Integer,String> entry : source.entrySet()){
+            result.put(entry.getValue(),entry.getKey());
+        }
+        return result;
     }
 }

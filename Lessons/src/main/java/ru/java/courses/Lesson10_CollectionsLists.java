@@ -39,16 +39,15 @@ public class Lesson10_CollectionsLists {
             }
         }
 
-        int min=3;
-        int max=8; //не строгое ограничение
-
-        if (list.size() < 4){
+        int size=list.size();
+        if (size < 4){
             return null;
         }
-        else if (list.size() < 8){
-            max = list.size();
+        else if (size < 8){
+            return list.subList(3,size);//3<=x<size
         }
-
-        return list.subList(min,max);
+        else {
+            return list.subList(3,8);// 3<=x<8
+        }
     }
 }
